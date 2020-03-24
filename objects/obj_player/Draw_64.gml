@@ -20,10 +20,7 @@ draw_set_halign(fa_left);
 draw_text(starting_player_hud_x,starting_player_hud_y,string(player_name));
 
 
-var width_of_view = view_w/2;
-var other_width = camera_get_view_width(view)/2;
 
-draw_text(view_w/2,view_h/2,string(total_grav));
 
 
 #region draw_health 

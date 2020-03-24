@@ -37,7 +37,7 @@ global.sound_effects_volume = 1;
 global.music_volume = 1;
 
 
-
+global.game_speed = 1;
 
 
 
@@ -126,7 +126,7 @@ global.weapons_grid = ds_grid_create(9,0);
 
 
 //wood sword
-scr_add_weapon_to_database_grid(spr_weapon_sword_basic,spr_weapon_sword_basic,spr_weapon_sword_basic,1.45,10,spr_weapon_sword_basic,4,0,1.2);
+scr_add_weapon_to_database_grid(spr_weapon_sword_basic_1,spr_weapon_sword_basic_2,spr_weapon_sword_basic_3,1.45,10,spr_weapon_sword_basic_1,4,0,1.2,);
 
 
 

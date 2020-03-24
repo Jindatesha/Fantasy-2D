@@ -9,7 +9,7 @@ var has_crit = argument[2];
 //see what our health is like to determine the dmg number color
 var hp_percentage =  my_hp/my_max_hp; 
 
-with (instance_create_depth(x,y,depth - 1,obj_ui_damage_numbers))
+with (instance_create_depth(x,y,-100,obj_ui_damage_numbers))
 {
 	display_amount = damage_amount;
 	direction = damage_numbers_direction;

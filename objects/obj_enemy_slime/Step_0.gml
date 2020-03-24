@@ -10,10 +10,18 @@ event_inherited();
 
 
 
+
 //if we are within range of the player...
-if has_been_aggroed == false and distance_to_object(obj_player) <= my_range
+if has_been_aggroed == false
 {
-	has_been_aggroed = true;
+	move_left = 0;
+	move_right = 0;
+
+			
+	if distance_to_object(obj_player) <= my_range
+	{
+		has_been_aggroed = true;
+	}
 }
 
 
@@ -22,10 +30,27 @@ if has_been_aggroed == false and distance_to_object(obj_player) <= my_range
 if has_been_aggroed == true
 {
 	//start walking over to the player...to attack
-	var x_dif = obj_player.x - x;
-	//var y_dif = obj_player.y - y;
-	h_speed = min(abs(x_dif),my_speed) * sign(x_dif);
-	//v_speed = min(abs(y_dif),my_speed) * sign(y_dif);
+	var x_dif = obj_player.x - x;	
+	move_speed = min(abs(x_dif),my_speed);
+	var move_dir = sign(x_dif);
+	switch(move_dir) 
+	{		
+		case -1:
+			move_left = 1;
+			move_right = 0;
+		break;
+		
+		case 0:
+			move_left = 0;
+			move_right = 0;
+		break;
+		
+		case 1:
+			move_left = 0;
+			move_right = 1;
+		break;
+	}
+	
 	
 	
 	
@@ -48,8 +73,8 @@ if has_been_aggroed == true
 if is_attacking == true
 {
 	//we dont want to be able to move while attacking (wind up)	
-	h_speed = 0;
-	v_speed = 0;
+	move_speed = 0;
+	
 			
 	//count down till attack comenses..(can be affected by player attacking us to stun*)
 	time_till_attack -= 1;
@@ -68,8 +93,8 @@ if is_attacking == true
 		
 		//set attack location
 		direction = point_direction(x,y,obj_player.x,obj_player.y);
-		location_to_attack_x = x + lengthdir_x(min(my_attack_length,abs(obj_player.x - x)),direction); 
-		location_to_attack_y = y + lengthdir_y(min(my_attack_length,abs(obj_player.y - y)),direction); 
+		location_to_attack_x = x + lengthdir_x(min(my_attack_length,max((my_attack_length/2),abs(obj_player.x - x))),direction); 
+		location_to_attack_y = y + lengthdir_y(min(my_attack_length,max((my_attack_length/2),abs(obj_player.y - y))),direction); 
 		 
 	}
 
@@ -82,11 +107,19 @@ if is_attacking == true
 	{
 		
 		//move to attack collider location
-		
-		var number_of_attack_frames = sprite_get_number(sprite_state_array[STATE.ATTACK]);
-		h_speed = (location_to_attack_x - x)/number_of_attack_frames;
-		v_speed = (location_to_attack_y - y)/number_of_attack_frames;
-		
+		if has_launched_attack == false
+		{
+			has_launched_attack = true;
+			var number_of_attack_frames = sprite_get_number(sprite_state_array[STATE.ATTACK]);
+			var horizontal_diff = (location_to_attack_x - x);		
+			var grav = 1.3;
+			var time_to_get_horizontal_diff = min(my_max_attack_projectile_speed,floor(abs(horizontal_diff/my_max_attack_projectile_speed))) * sign(horizontal_diff);
+			h_speed_projectile += time_to_get_horizontal_diff;//projectile based
+			var vertical_diff = (location_to_attack_y - y);
+			v_speed_additional += min(my_max_attack_projectile_speed, abs(vertical_diff) + (time_to_get_horizontal_diff * grav)) * sign(vertical_diff);
+			
+			//lerp(x, x + hspeed, room_speed);
+		}
 		
 		//during punch part where collider should check for player
 		if floor(image_index) == image_number - 1
@@ -106,6 +139,8 @@ if is_attacking == true
 				
 			sprite_index = sprite_state_array[STATE.WALK];
 			
+			//can now launch attack again! 
+			has_launched_attack = false;
 				
 		}
 	}
@@ -113,46 +148,5 @@ if is_attacking == true
 
 }
 
-
-
-
-
-
-#region horizontal/vertical movement & collision
-
-//horizontal
-if place_meeting(x + h_speed, y,obj_solid)
-{
-	while !place_meeting(x + sign(h_speed), y,obj_solid)
-	{
-		x += sign(h_speed);			
-	}
-	
-	h_speed = 0;
-}
-else
-{
-	x += h_speed;	
-}
-
-
-
-//vertical movement
-if place_meeting(x, y + v_speed,obj_solid)
-{
-	while !place_meeting(x, y + sign(v_speed),obj_solid)
-	{
-		y += sign(v_speed);
-	}
-	
-	v_speed = 0;
-}
-else
-{
-	y += v_speed;
-}
-
-
-#endregion
 
 

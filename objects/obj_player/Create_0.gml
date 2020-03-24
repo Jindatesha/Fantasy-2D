@@ -5,9 +5,9 @@ current_state = STATE.WALK;
 sprite_state_array[STATE.IDLE] = spr_player_blank;
 sprite_state_array[STATE.WALK] = spr_player_blank;
 sprite_state_array[STATE.DODGE_ROLL] = spr_player_blank;
-sprite_state_array[STATE.ATTACK] = spr_player_blank;
+sprite_state_array[STATE.ATTACK] = spr_player_attack_sword_basic;
 can_switch_state = true;
-
+last_current_state = current_state;
 
 
 //starting stats
@@ -16,24 +16,29 @@ my_stats_array[PLAYER_STATS.STRENGTH] = 10;
 my_stats_array[PLAYER_STATS.ATTACK_SPEED] = 10;
 my_stats_array[PLAYER_STATS.CRIT_CHANCE] = 5;
 
-image_speed = 0.4;
+//image_speed = 1;
 
 //how fast the player can normally move
+h_speed_projectile = 0;
 move_speed = 10;
 max_speed = 40;
-jump_height = 40;
+jump_height = 25;
 mouse_dir = 0;
 total_grav= 0;
 max_grav = 40;
 h_speed = 0;
 v_speed = 0;
 can_jump = false;
+is_on_floor = false;
+move_left = 0;
+move_right = 0;
+reduce_speed = 0;
 
 current_additional_v_speed_from_jump_height = 0;
 max_pressed_jump_leeyway_time = 4;//frames
 pressed_jump_leeway = 0;
 pressed_jump = 0;
-v_jump_amount = 0;
+
 total_possible_jumps = 2;
 current_jumped_times = 0;
 
@@ -66,10 +71,10 @@ hand_dir = 0; //degree in which the arms will "bend" until the weapon is swapped
 
 
 
-attack_thrust_amount = 60;
+attack_thrust_amount = 10;
 attack_thrust_total_frames = room_speed * 0.13;
 attack_thrust_current_frame = 0;
-
+has_added_attack_thrust = false;
 
 //starting stats
 starting_hp = my_stats_array[PLAYER_STATS.HEALTH];

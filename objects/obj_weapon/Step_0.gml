@@ -3,16 +3,17 @@
 
 
 
-var player_arm_length = 20;
+var player_arm_length = 30;
 
 image_angle = owner.mouse_dir;
+image_yscale = owner.image_xscale;
 
 //follow owner
-x = owner.x + (22 * owner.weapon_hand) + lengthdir_x(player_arm_length, owner.mouse_dir);
-y = owner.y + 12 + lengthdir_y(player_arm_length, owner.mouse_dir);
+x = owner.x + (0 * owner.weapon_hand) + lengthdir_x(player_arm_length, owner.mouse_dir);
+y = owner.y + 0 + lengthdir_y(player_arm_length, owner.mouse_dir);
 
 
-
+/*
 if y < owner.y
 {
 	depth = obj_player.depth + 1;
@@ -21,7 +22,7 @@ else
 {
 	depth = obj_player.depth - 1;
 }
-
+*/
 
 //you have used the weapon (attacked)
 if launch_attack == true
@@ -44,7 +45,7 @@ if launch_attack == true
 		
 		//change sprite to use combo X basic attack
 		sprite_index = ds_grid_get(global.weapons_grid,(WEAPON_ATTRIBUTE.BASIC_ATTACK_1) + (attack_count),my_item_number);
-
+		image_index = 0;
 	}
 	
 }
@@ -108,9 +109,10 @@ if has_done_hit_collisions == false
 
 
 //check to see if animation for this basic attack is done and we are attacking...
-if image_index > image_number - 1
+if image_index >= image_number - 1
 {
 	check_to_see_if_player_attacks_again_within_window = true;	
+
 }
 
 
@@ -120,7 +122,7 @@ if check_to_see_if_player_attacks_again_within_window == true
 {
 	has_already_attacked = true;
 	image_speed = 0;
-	image_index = image_number - 2;
+	image_index = image_number - 1;
 		
 		
 		
@@ -151,8 +153,7 @@ if check_to_see_if_player_attacks_again_within_window == true
 
 
 
-
-
+/*
 if flip_weapon == true
 {	
 	image_yscale = lerp(image_yscale,flip_direction,0.45);
@@ -164,8 +165,7 @@ if flip_weapon == true
 		flip_weapon = false;
 	}
 }
-
-
+*/
 
 
 

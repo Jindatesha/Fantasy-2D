@@ -17,7 +17,7 @@ scr_resolution();
 #macro view_ratio surface_get_width(application_surface)/view_w
 
 
-
+global.screen_shake_duration = 0;
 has_set_original_view_before_screenshake = false;
 original_view_before_screenshake_x = 0;
 original_view_before_screenshake_y = 0;

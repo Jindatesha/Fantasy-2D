@@ -47,10 +47,12 @@ camera_set_view_pos(view,locked_x,locked_y);
 
 
 #region if player attacked...screenshake
-if global.player_has_attacked == true
+if global.screen_shake_duration != 0
 {
+	global.screen_shake_duration -= 1;
+	
 	has_set_original_view_before_screenshake = true;
-	var screenshake_amount = random_range(-12,12);
+	var screenshake_amount = random_range(-10,10);
 	
 	original_view_before_screenshake_x += lengthdir_x(screenshake_amount,obj_player.mouse_dir);
 	original_view_before_screenshake_y += lengthdir_y(screenshake_amount,obj_player.mouse_dir);

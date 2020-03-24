@@ -16,6 +16,6 @@ olde_mouse_y = y;
 
 cursor_is_over_item_in_inventory = false;
 
-
+depth = -300;
 
 

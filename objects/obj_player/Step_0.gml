@@ -6,8 +6,8 @@
 
 
 #region controls
-var move_left = keyboard_check(ord("A"));
-var move_right = keyboard_check(ord("D"));
+move_left = keyboard_check(ord("A"));
+move_right = keyboard_check(ord("D"));
 pressed_jump = keyboard_check_pressed(ord("W"));
 var move_down = keyboard_check(ord("S"));
 
@@ -28,12 +28,6 @@ var call_inventory = keyboard_check(vk_tab);
 
 
 
-var reduce_speed = 1;
-
-if can_control_player == false 
-{
-	reduce_speed = 0;
-}
 
 
 if pressed_jump > 0
@@ -46,10 +40,9 @@ if pressed_jump_leeway > 0 and can_jump == true
 {
 	pressed_jump_leeway = 0;
 	current_jumped_times += 1;
-	total_grav = 0;
-	v_speed_additional += current_additional_v_speed_from_jump_height;	
-	current_additional_v_speed_from_jump_height = jump_height;	
-	v_speed_additional -= current_additional_v_speed_from_jump_height;
+	total_grav = 0;	
+	v_speed_additional = 0;
+	current_additional_v_speed_from_jump_height = -jump_height;	
 	coyote_time = 0;
 }
 
@@ -62,21 +55,6 @@ pressed_jump_leeway -= 1;
 
 #endregion
 
-
-//friction 
-var friction_amount = 0.09;
-current_additional_v_speed_from_jump_height -= (current_additional_v_speed_from_jump_height * friction_amount);
-h_speed_additional -= (h_speed_additional * friction_amount);
-v_speed_additional -= (v_speed_additional * friction_amount);
-
-
-//gravity
-var grav = 0.42;
-total_grav += (total_grav * 0.04) + grav;
-total_grav = min(total_grav,max_grav);
-v_speed = total_grav + v_jump_amount + v_speed_additional;
-
-h_speed = (((move_right - move_left) * move_speed) * reduce_speed) + h_speed_additional;
 
 #region hotbar
 	var olde_hotbar_selection = selected_hotbar_slot;
@@ -203,21 +181,21 @@ if can_switch_state == true
 				
 			break;
 		}
-		
+	
 	
 }
+
 #endregion
 
 
-if global.freeze_character == false
-{
-#region idle
-if can_switch_state == true 
-{
-	 //what state am I in?
-	current_state = STATE.IDLE;
-}
-#endregion
+
+	#region idle
+		if can_switch_state == true 
+		{
+			 //what state am I in?
+			current_state = STATE.IDLE;
+		}
+	#endregion
 
 
 
@@ -241,15 +219,19 @@ if global.player_has_attacked == true
 {
 	attack_thrust_current_frame += 1;
 	
-	h_speed_additional += lengthdir_x(ceil(attack_thrust_amount/attack_thrust_total_frames),mouse_dir);
-	v_speed_additional += lengthdir_y(ceil(attack_thrust_amount/attack_thrust_total_frames),mouse_dir);
+	if has_added_attack_thrust == false
+	{
+		has_added_attack_thrust = true;
+		h_speed_additional += lengthdir_x(attack_thrust_amount,mouse_dir);
+		v_speed_additional += lengthdir_y(attack_thrust_amount,mouse_dir);
+	}
 	
 	if attack_thrust_current_frame >= attack_thrust_total_frames
 	{
 		global.player_has_attacked = false;
 		
 		attack_thrust_current_frame = 0;
-		
+		has_added_attack_thrust = false;
 	}
 }
 #endregion
@@ -387,69 +369,6 @@ if is_casting_spell[0] or is_casting_spell[1] or is_casting_spell[2]
 
 
 
-
-#region horizontal/vertical movement & collision
-
-//break up the movement collision into chunks (over several steps instead of one potentially skipping over a solid)
-//h_speed += over_fill_for_h_speed;
-//v_speed += over_fill_for_v_speed;
-
-//h_speed = (abs(h_speed) - 32)//its obj_solids width
-
-if (abs(v_speed) or abs(h_speed)) > 0 
-{
-	current_state = STATE.WALK;
-}
-
-
-//horizontal
-if place_meeting(x + h_speed, y,obj_solid)
-{
-	while (!place_meeting(x + sign(h_speed), y,obj_solid))
-	{
-		x += sign(h_speed);			
-	}
-	
-	h_speed = 0;		
-}
-else
-{
-	x += h_speed;	
-}
-
-
-
-//vertical movement
-if place_meeting(x, y + v_speed,obj_solid)
-{
-	while !place_meeting(x, y + sign(v_speed),obj_solid)
-	{
-		y += sign(v_speed);
-	}
-	
-	v_speed = 0;
-	total_grav = 0;
-	can_jump = true;
-	coyote_time = max_coyote_time;
-	current_jumped_times = 0;
-}
-else
-{
-	//in the air
-	
-	coyote_time -= 1;
-	if coyote_time <= 0 and current_jumped_times >= total_possible_jumps
-	{
-		can_jump = false;
-	}
-	
-	y += v_speed;
-}
-
-
-#endregion
-
-}
 
 
 
@@ -629,7 +548,7 @@ if call_inventory > 0
 		}
 			
 		
-		}
+	}
 		
 		
 }
@@ -850,12 +769,49 @@ if my_hp <= 0
 
 
 
+#region STATE MACHINE
+if (abs(v_speed) or abs(h_speed)) > 0 
+{
+	current_state = STATE.WALK;
+}
+
+
+if global.player_has_attacked == true
+{
+	current_state = STATE.ATTACK;
+	
+	if image_index == image_number - 1
+	{
+		image_speed = 0;
+	}
+	
+}
+
+
+//animate our sprites
+if current_state != last_current_state
+{
+	image_index = 0;
+}
+else
+{
+	image_index += 1;
+}
+
+last_current_state = current_state;
+
 
 //finally set our sprites image
 sprite_index = sprite_state_array[current_state];
+#endregion
 
 
 
+
+
+
+
+scr_movement_and_collision();
 
 
 

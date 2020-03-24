@@ -2,16 +2,8 @@
 // You can write your code in this editor
 
 
-h_speed = 0;
-v_speed = 0;
 
 
-//gravity
-var grav = 0.1;
-total_grav = clamp(total_grav, -max_grav,max_grav);
-total_grav += grav;
-v_speed += total_grav;
-v_speed = clamp(v_speed, -max_speed,max_speed);
 
 
 
@@ -100,7 +92,7 @@ if my_hp <= 0
 
 
 
-
+scr_movement_and_collision();
 
 
 

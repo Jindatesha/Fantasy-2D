@@ -18,7 +18,8 @@ has_ended_attack_wind_up = false;
 
 my_attack_wind_up_time = room_speed * 1;
 
-my_attack_length = 130; //px possible attack length
+my_attack_length = 230; //px possible attack length
+my_max_attack_projectile_speed = 15;
 
-
-
+my_range = 400;
+my_speed = 3;
