@@ -8,7 +8,7 @@ sprite_state_array[STATE.DODGE_ROLL] = spr_player_blank;
 sprite_state_array[STATE.ATTACK] = spr_player_attack_sword_basic;
 can_switch_state = true;
 last_current_state = current_state;
-
+is_attacking = false;
 
 //starting stats
 my_stats_array[PLAYER_STATS.HEALTH] = 10;
@@ -16,7 +16,7 @@ my_stats_array[PLAYER_STATS.STRENGTH] = 10;
 my_stats_array[PLAYER_STATS.ATTACK_SPEED] = 10;
 my_stats_array[PLAYER_STATS.CRIT_CHANCE] = 5;
 
-//image_speed = 1;
+image_speed = 1;
 
 //how fast the player can normally move
 h_speed_projectile = 0;

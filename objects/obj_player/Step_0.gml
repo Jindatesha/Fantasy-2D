@@ -212,6 +212,10 @@ if use_weapon > 0 and my_weapon_id != -1 and my_weapon_id.can_attack == true
 	global.player_has_attacked = true;
 	attack_thrust_current_frame = 0;
 	//can_control_player = false;
+	
+	is_attacking = true;//still
+	image_index = 0;//[reset] or transition to next the attack animation
+
 }
 
 
@@ -776,15 +780,15 @@ if (abs(v_speed) or abs(h_speed)) > 0
 }
 
 
-if global.player_has_attacked == true
+if is_attacking == true
 {
 	current_state = STATE.ATTACK;
 	
-	if image_index == image_number - 1
+	//im assuming this is the last potential state
+	if last_current_state == current_state and floor(image_index) == image_number - 1
 	{
-		image_speed = 0;
+		image_index = image_number - 1;
 	}
-	
 }
 
 
@@ -793,10 +797,7 @@ if current_state != last_current_state
 {
 	image_index = 0;
 }
-else
-{
-	image_index += 1;
-}
+
 
 last_current_state = current_state;
 

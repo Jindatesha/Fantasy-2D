@@ -27,7 +27,7 @@ else
 //you have used the weapon (attacked)
 if launch_attack == true
 {
-	
+	owner.is_attacking = true;
 	launch_attack = false;
 	chain_attack_window = max_chain_attack_window;
 	check_to_see_if_player_attacks_again_within_window = false;
@@ -130,6 +130,9 @@ if check_to_see_if_player_attacks_again_within_window == true
 		
 	if chain_attack_window <= 0
 	{
+		//we are done attacking/in this combo
+		//get player to go back from attacking animation
+		owner.is_attacking = false;
 		image_index = 0;
 		can_attack = false;
 		check_to_see_if_player_attacks_again_within_window = false;
@@ -138,6 +141,7 @@ if check_to_see_if_player_attacks_again_within_window == true
 	}
 	else
 	{
+		
 		//are we at max combo? ...if not then we have an opportunity to attack again to add to the basic atk combo
 		if attack_count < 2
 		{

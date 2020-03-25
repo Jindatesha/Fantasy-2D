@@ -39,7 +39,7 @@ global.music_volume = 1;
 
 global.game_speed = 1;
 
-
+global.world_time = 0;//0 -> 1  ( 1=100% of day)
 
 
 //settings menu and to make sure that other menus arent interactable while these are open

@@ -47,6 +47,14 @@
             }
         },
         {
+            "Key": "0a9cc732-b659-486d-9535-3c05a6369210",
+            "Value": {
+                "id": "611f956d-b77e-4440-9f15-9affcb1995fd",
+                "resourcePath": "sprites\\spr_ui_hud_day_and_night_cycle\\spr_ui_hud_day_and_night_cycle.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "0d3bdec8-4e3f-48b9-8a1a-e18e3a076199",
             "Value": {
                 "id": "a43ccd7a-be6d-4513-9ab7-f01218c5e36a",
@@ -247,6 +255,14 @@
             }
         },
         {
+            "Key": "49ff58c4-d0a5-4cbe-8990-bcece885d51e",
+            "Value": {
+                "id": "6e9912a0-4bd9-4eae-ac71-befa12aebb14",
+                "resourcePath": "sprites\\spr_ui_hud_health_bar\\spr_ui_hud_health_bar.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "4ae89325-a14a-418b-a9f6-e7381dcd5ca4",
             "Value": {
                 "id": "58e341c7-cdc4-48f1-ae49-20b800da3245",
@@ -287,10 +303,26 @@
             }
         },
         {
+            "Key": "5a05811f-2074-45f0-a5d2-6cb085e790d7",
+            "Value": {
+                "id": "7958910f-2421-4e74-a864-56bb7b5d2c26",
+                "resourcePath": "sprites\\spr_ui_hud_weapon_ability_middle\\spr_ui_hud_weapon_ability_middle.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "601fd3d7-31d7-4a6c-ae7e-9b54cced7e40",
             "Value": {
                 "id": "85036cfb-80c3-4a77-91f3-9e59748e60c7",
                 "resourcePath": "sprites\\spr_hand_grab_default\\spr_hand_grab_default.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "62b6f9ff-0dbe-4346-8758-d7f8c5248128",
+            "Value": {
+                "id": "582da7de-226a-4f1c-8609-e38a08205160",
+                "resourcePath": "sprites\\spr_ui_hud_weapon_ability_icons\\spr_ui_hud_weapon_ability_icons.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -307,6 +339,14 @@
             "Value": {
                 "id": "916cd225-5316-4681-8a91-d5913338f46c",
                 "resourcePath": "sprites\\spr_enemy_slime_collision\\spr_enemy_slime_collision.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "654034ea-102f-4ee1-b762-98fe0b2ecacd",
+            "Value": {
+                "id": "baa53973-38f0-4568-885d-33370e52a1eb",
+                "resourcePath": "sprites\\spr_ui_hud_health_red_bar\\spr_ui_hud_health_red_bar.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -351,10 +391,26 @@
             }
         },
         {
+            "Key": "720d56ba-2ecd-46b6-8219-761e5c3f3b48",
+            "Value": {
+                "id": "520d4706-606b-476b-a25f-777860999e22",
+                "resourcePath": "views\\720d56ba-2ecd-46b6-8219-761e5c3f3b48.yy",
+                "resourceType": "GMFolder"
+            }
+        },
+        {
             "Key": "7895db10-ec45-45b0-a630-b81403316d0c",
             "Value": {
                 "id": "0701831e-9d45-415c-8347-4c62985e825a",
                 "resourcePath": "sprites\\spr_enemy_health_backing\\spr_enemy_health_backing.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "79f1aa0a-91f9-4869-b780-37da5ceb2ce5",
+            "Value": {
+                "id": "b77e4fc1-b72c-4de3-8fec-52cd0db553a5",
+                "resourcePath": "sprites\\spr_ui_hud_weapon_ability_backing\\spr_ui_hud_weapon_ability_backing.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -511,6 +567,14 @@
             }
         },
         {
+            "Key": "b6e45f68-ee85-4dde-9e16-c1348522ae04",
+            "Value": {
+                "id": "aae39884-a9bd-4e5e-9613-24eaa7bc5c2d",
+                "resourcePath": "sprites\\spr_ui_hud_health_bar_backing\\spr_ui_hud_health_bar_backing.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "ba576989-0232-4f9d-8ee3-4de557965053",
             "Value": {
                 "id": "fd4f06bc-7a90-4dba-8cf9-651a65ff2b72",
@@ -587,6 +651,14 @@
             "Value": {
                 "id": "c59823dd-c6c4-4f5e-b14b-ebd9ad48c729",
                 "resourcePath": "sprites\\spr_health_pellet\\spr_health_pellet.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "cc697402-2eec-41e3-838d-222ad322b2c1",
+            "Value": {
+                "id": "7816ac38-63a7-491a-859b-20720dca1ef0",
+                "resourcePath": "sprites\\spr_ui_hud_backing\\spr_ui_hud_backing.yy",
                 "resourceType": "GMSprite"
             }
         },
@@ -679,6 +751,14 @@
             }
         },
         {
+            "Key": "e6afd4eb-2bcd-4370-8b69-e0d2f60841e4",
+            "Value": {
+                "id": "4ebcedbf-aa2d-4af9-85fe-461a1b7db35a",
+                "resourcePath": "sprites\\spr_ui_hud_day_and_night_cycle_stamp\\spr_ui_hud_day_and_night_cycle_stamp.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "e9824a3e-cf02-4be1-b735-2defe67764ef",
             "Value": {
                 "id": "897c28da-99ac-446e-8da5-77551249712c",
@@ -711,11 +791,35 @@
             }
         },
         {
+            "Key": "edfe3da5-eb75-476b-b302-327f603dadc9",
+            "Value": {
+                "id": "78113d99-a2a9-45b7-82e0-12d0cb6d2e77",
+                "resourcePath": "sprites\\spr_ui_hud_exp_bar\\spr_ui_hud_exp_bar.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "f41471a4-9c4e-4564-bd89-2e0062ac2a6d",
+            "Value": {
+                "id": "f5a250a7-9d75-47dc-a545-183fe73c5c9e",
+                "resourcePath": "sprites\\spr_ui_hud_weapon_icons\\spr_ui_hud_weapon_icons.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "f418569b-3bdd-4706-a0e4-364317f54032",
             "Value": {
                 "id": "25c467a9-2cfa-40e6-ac2e-2d418d4c079f",
                 "resourcePath": "options\\mac\\options_mac.yy",
                 "resourceType": "GMMacOptions"
+            }
+        },
+        {
+            "Key": "fefdc2c8-69f0-4547-9f97-3510c1e9a996",
+            "Value": {
+                "id": "85bdf876-4d36-478b-956c-c88f9673f48e",
+                "resourcePath": "sprites\\spr_ui_hud_weapon_icon_backing\\spr_ui_hud_weapon_icon_backing.yy",
+                "resourceType": "GMSprite"
             }
         }
     ],
