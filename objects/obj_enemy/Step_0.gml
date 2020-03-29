@@ -11,7 +11,7 @@
 //die...
 if my_hp <= 0
 {
-	/*
+	
 	//drop some mats
 	var chosen_item = irandom_range(0,100);
 	var has_found_items_to_drop = false;
@@ -68,7 +68,7 @@ if my_hp <= 0
 	
 	
 	
-	*/
+	
 
 	
 	

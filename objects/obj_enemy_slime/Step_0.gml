@@ -137,7 +137,7 @@ if is_attacking == true
 			}
 			
 				
-			sprite_index = sprite_state_array[STATE.WALK];
+			sprite_index = sprite_state_array[STATE.RUN];
 			
 			//can now launch attack again! 
 			has_launched_attack = false;

@@ -59,9 +59,16 @@ global.can_move_towards_mouse = true;
 enum STATE
 {
 	IDLE,
-	WALK,
+	RUN,
+	BACK_PEDDLE,
 	DODGE_ROLL,
 	ATTACK,
+	CROUCH,
+	LEDGE_INITIAL,
+	LEDGE_IDLE,
+	LEDGE_TO_KNEE,
+	KNEE_TO_STAND,
+	IN_AIR_UP,
 	ATTACK_WIND,
 	ATTACK_SPECIAL,
 	LAST
@@ -82,7 +89,7 @@ enum DEPTH
 	CURSOR = -30,
 	BELOW_CURSOR = -14,
 	SMALLEST = -9,
-	PLAYER = 0,
+	PLAYER = -8,
 	ENEMY,
 	ITEM_ON_FLOOR,
 	FLOOR 
@@ -105,7 +112,12 @@ enum WEAPON_ATTRIBUTE
 
 }
 
-
+//what room are we in?
+enum ROOM_NUMBER
+{
+	NO_ENEMY_ZONE = -1,
+	SLIME_ZONE = 0
+}
 
 enum MONSTER
 {
@@ -113,11 +125,30 @@ enum MONSTER
 }
 
 
+enum ITEM_CLASS
+{
+	ANYTHING,
+	MATERIAL,
+	WEAPON,
+	PANTS,
+	TORSO,
+	HELMET
+	
+	
+}
+
 enum WEAPON_TYPE
 {
 	SWORD = 0
 }
 
+enum WEAPON_LIST
+{
+	//first one is fists
+	BASIC = MATERIAL_LIST.LAST_IN_LIST,
+	IRON_SWORD,
+	LAST_IN_LIST
+}
 
 
 // WEAPONS
@@ -126,7 +157,7 @@ global.weapons_grid = ds_grid_create(9,0);
 
 
 //wood sword
-scr_add_weapon_to_database_grid(spr_weapon_sword_basic_1,spr_weapon_sword_basic_2,spr_weapon_sword_basic_3,1.45,10,spr_weapon_sword_basic_1,4,0,1.2,);
+scr_add_weapon_to_database_grid(spr_weapon_sword_basic_1,spr_weapon_sword_basic_2,spr_weapon_sword_basic_3,1.45,10,spr_weapon_sword_basic_1,4,0.3,1.2);
 
 
 
@@ -135,7 +166,67 @@ scr_add_weapon_to_database_grid(spr_weapon_sword_basic_1,spr_weapon_sword_basic_
 
 
 
+#region MONSTER-ITEM DROP TABLE 
+
+//material list
+enum MATERIAL_LIST
+{
+	//NOTHING = -1, (in a sprite, these are sub images)
+	BASIC = 0,//slime
+	ICE_BLOCK,
+	GOLD_GEM,
+	PURPLE_GEM,
+	LAST_IN_LIST
+	
+}
+
+
+#region potential drops for slime
+	slime_list_1 = ds_list_create();
+	ds_list_add(slime_list_1,-1);
+
+	slime_list_2 = ds_list_create();
+	ds_list_add(slime_list_2,MATERIAL_LIST.BASIC);
+
+	slime_list_3 = ds_list_create();
+	ds_list_add(slime_list_3,MATERIAL_LIST.ICE_BLOCK);
+	
+	//% and a list of what that drop entails 
+	slime_drop_list = ds_list_create();
+	ds_list_add(slime_drop_list,30,slime_list_1,45,slime_list_2,25,slime_list_3);
+#endregion
 
 
 
 
+
+
+global.monster_drop_list = ds_list_create(); 
+ds_list_add(global.monster_drop_list,slime_drop_list);
+
+#endregion
+
+
+#region ALL items data-base...what item number
+global.item_database_grid = ds_grid_create(5,0);
+
+//materials
+scr_add_item_to_database_grid(spr_all_materials,MATERIAL_LIST.BASIC,ITEM_CLASS.MATERIAL);//item # 0 = slime
+scr_add_item_to_database_grid(spr_all_materials,MATERIAL_LIST.ICE_BLOCK,ITEM_CLASS.MATERIAL);
+scr_add_item_to_database_grid(spr_all_materials,MATERIAL_LIST.GOLD_GEM,ITEM_CLASS.MATERIAL);
+scr_add_item_to_database_grid(spr_all_materials,MATERIAL_LIST.PURPLE_GEM,ITEM_CLASS.MATERIAL);
+#endregion
+
+
+
+
+
+
+#region craftable items recipe info
+	global.item_forge_grid = ds_grid_create(13,0);
+	
+	//fill grid info
+
+	//weapons
+	scr_add_item_to_forge_grid(WEAPON_LIST.BASIC,"Wood Sword",MATERIAL_LIST.BASIC,2,MATERIAL_LIST.ICE_BLOCK,1);
+#endregion

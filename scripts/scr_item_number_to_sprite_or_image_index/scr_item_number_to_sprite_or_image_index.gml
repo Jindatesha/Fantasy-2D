@@ -16,6 +16,7 @@ if item_number < MATERIAL_LIST.LAST_IN_LIST
 	if which_index_to_return == 0 return spr_all_materials;
 	else return item_number;
 }
+/*
 else
 if item_number < WEAPON_LIST.LAST_IN_LIST
 {

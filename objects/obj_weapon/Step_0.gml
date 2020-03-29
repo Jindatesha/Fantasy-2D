@@ -9,8 +9,8 @@ image_angle = owner.mouse_dir;
 image_yscale = owner.image_xscale;
 
 //follow owner
-x = owner.x + (0 * owner.weapon_hand) + lengthdir_x(player_arm_length, owner.mouse_dir);
-y = owner.y + 0 + lengthdir_y(player_arm_length, owner.mouse_dir);
+x = owner.x + (0 * owner.weapon_hand) + lengthdir_x(player_arm_length, owner.mouse_dir) + owner.arm_socket_x;
+y = owner.y + 0 + lengthdir_y(player_arm_length, owner.mouse_dir) + owner.arm_socket_y;
 
 
 /*

@@ -13,7 +13,7 @@ attack_count = 0;
 my_knockback_amount = 10;
 my_attack_image_speed = 1;
 
-max_chain_attack_window = 0.2 * room_speed;
+max_chain_attack_window = 0.21 * room_speed;
 chain_attack_window = max_chain_attack_window;
 
 check_to_see_if_player_attacks_again_within_window = false;
@@ -22,6 +22,6 @@ check_to_see_if_player_attacks_again_within_window = false;
 flip_weapon = false;
 flip_direction = 1;
 
-
+draw_weapon = true;
 
 

@@ -8,8 +8,8 @@
 #region controls
 move_left = keyboard_check(ord("A"));
 move_right = keyboard_check(ord("D"));
-pressed_jump = keyboard_check_pressed(ord("W"));
-var move_down = keyboard_check(ord("S"));
+pressed_jump = keyboard_check_pressed(ord("W")) or keyboard_check_pressed(vk_space);
+var crouch = keyboard_check(ord("S"));
 
 
 var use_weapon = mouse_check_button_pressed(mb_left);
@@ -23,35 +23,40 @@ var call_inventory = keyboard_check(vk_tab);
 
 
 
-
-
-
-
-
-
-
-if pressed_jump > 0
+if use_weapon_special > 0 
 {
-	pressed_jump_leeway = max_pressed_jump_leeyway_time;
+	var debug = true;
 }
 
 
-if pressed_jump_leeway > 0 and can_jump == true
-{
-	pressed_jump_leeway = 0;
-	current_jumped_times += 1;
-	total_grav = 0;	
-	v_speed_additional = 0;
-	current_additional_v_speed_from_jump_height = -jump_height;	
-	coyote_time = 0;
-}
 
-if current_jumped_times >= total_possible_jumps
-{
-	can_jump = false;
-}
-pressed_jump_leeway -= 1;
 
+
+#region Jumping
+	//now can no longer jump...so if u walk off cliff u cant jump
+	
+	if pressed_jump > 0
+	{
+		pressed_jump_leeway = max_pressed_jump_leeyway_time;
+	}
+
+
+	if pressed_jump_leeway > 0 and can_jump == true
+	{
+		pressed_jump_leeway = 0;
+		current_jumped_times += 1;
+		total_grav = 0;	
+		v_speed_additional = 0;
+		current_additional_v_speed_from_jump_height = -jump_height;	
+		coyote_time = 0;
+	}
+
+	if current_jumped_times >= total_possible_jumps
+	{
+		can_jump = false;
+	}
+	pressed_jump_leeway -= 1;
+#endregion
 
 #endregion
 
@@ -103,7 +108,7 @@ pressed_jump_leeway -= 1;
 
 
 //mouse direction
-if can_switch_state == true
+if can_flip_image_dir == true
 {
 
 		
@@ -189,7 +194,7 @@ if can_switch_state == true
 
 
 
-	#region idle
+#region idle
 		if can_switch_state == true 
 		{
 			 //what state am I in?
@@ -388,8 +393,8 @@ if call_inventory > 0
 
 		
 		//set the position for the ui
-		var starting_inventory_x = (view_w/2) - (sprite_get_width(spr_ui_healthbar_backing)/2);
-		var starting_inventory_y = view_h * 0.1;
+		var starting_inventory_x = (gui_w/2) - (sprite_get_width(spr_ui_healthbar_backing)/2);
+		var starting_inventory_y = gui_h * 0.1;
 			
 			
 
@@ -638,88 +643,8 @@ if pick_up_item > 0
 			//check to see if this slot is empty (-1)
 			if ds_list_find_value(inventory_list,i) == -1
 			{
-				#region if we are talking about putting it in one of the equipment slots...
-				if i < number_of_equipment_slots
-				{
-					//make sure the item to be picked up is an equipment piece
-					if item_to_be_picked_up.my_item_number >= HELMETS_LIST.BASIC
-					{
-						var can_equip_item_on_floor = false;
-						
-						//is this item class the same as the class of the slot we want to place it in?
-						switch(i)
-						{
-							case 0:
-								//helmet
-								if item_to_be_picked_up.my_item_number < HELMETS_LIST.LAST_IN_LIST
-								{
-									can_equip_item_on_floor = true;
-								}
-								else
-								{
-									continue;
-								}
-							break;
-							
-							
-							case 1:
-								//torso
-								if item_to_be_picked_up.my_item_number >= TORSO_LIST.BASIC and item_to_be_picked_up.my_item_number < TORSO_LIST.LAST_IN_LIST
-								{
-									can_equip_item_on_floor = true;
-								}
-								else
-								{
-									continue;
-								}
-							break;
-							
-							case 2:
-								//pants
-								if item_to_be_picked_up.my_item_number >= PANTS_LIST.BASIC and item_to_be_picked_up.my_item_number < PANTS_LIST.LAST_IN_LIST
-								{
-									
-									can_equip_item_on_floor = true;
-									
-								}
-								else
-								{
-									continue;
-								}
-							break;
-							
-						}
-						
-						
-						if can_equip_item_on_floor == true
-						{
-							
-							//place the item on floor into our inventory
-							ds_list_replace(inventory_list,i,item_to_be_picked_up.my_item_number);
-							
-							//destroy that item on the floor so we cant keep picking it up
-							with (item_to_be_picked_up)
-							{		
-								//destroy item so it cant be picked up again
-								instance_destroy();
-							}
-							
-							scr_refresh_player_inventory_items();
-						}
-						
-						//found the item slot to place it in, no need to check other inventory slots
-						break;
-						
-					}
-					else
-					{
-						//so we are noticing that an equipment slot is empty but the item we are trying to pick up is NOT an equipment piece
-						continue;// so cant place in here...sorry charlie...go through the loop again
-					}
-				}
-				#endregion
 				
-				//place the item on floor into our inventory
+				//place the item into our inventory
 				ds_list_replace(inventory_list,i,item_to_be_picked_up.my_item_number);
 			
 			
@@ -772,16 +697,152 @@ if my_hp <= 0
 
 
 
+#region ledge-grabbing
+
+//if we are touching the ledge of an 
+//obj_solid and in_air and are moving towards that ledge...
+//then go into ledge-grab state
+
+var facing_dir = (move_right - move_left);
+var normal_run_value = (facing_dir * move_speed);
+var colliding_terrain_id = noone;
+ds_list_clear(ledge_collision_list);
+if hanging_on_ledge == false and getting_up_from_ledge == false and is_on_floor == false 
+{
+	colliding_terrain_id = instance_position(x + (sprite_get_xoffset(mask_index) * facing_dir) + normal_run_value,y - sprite_get_yoffset(mask_index),obj_solid);
+
+}
+
+if colliding_terrain_id != noone
+{
+	can_now_climb_up_with_that_directional_button = false;
+	has_finished_initial_ledge_grab = false;
+	
+	with(colliding_terrain_id)
+	{
+		var ledge_leeway_for_grab = 10;//px away from ledge we can still grab on too...some forgiveness
+		
+		//if we are on the left edge
+		if collision_rectangle(bbox_left, bbox_top, bbox_left - ledge_leeway_for_grab, bbox_top + other.v_speed, other, false, true) and !instance_position(bbox_left, bbox_top - 1,obj_solid)
+		{
+			with(other)
+			{
+				//switch hands
+				image_xscale = 1;
+				weapon_hand = 1;
+				hand_dir = mouse_dir;
+					
+				//also mirror the weapon in hand if we have one
+				if my_weapon != -1
+				{
+					with(my_weapon)
+					{
+						flip_weapon = true;
+						flip_direction = 1;
+					}
+				}
+					
+				hanging_on_ledge = true;
+				potential_end_up_location_from_ledge_x = other.bbox_left + sprite_get_xoffset(mask_index);
+				potential_end_up_location_from_ledge_y = other.bbox_top - sprite_get_height(mask_index) + sprite_get_yoffset(mask_index);
+				
+				x = other.bbox_left - sprite_get_xoffset(mask_index);
+				y = other.bbox_top + sprite_get_yoffset(mask_index);
+				
+				ds_list_clear(ledge_collision_list);
+			}
+		}
+		
+		
+		//or right edge of a solid obj/terrain
+		if collision_rectangle(bbox_right, bbox_top, bbox_right + ledge_leeway_for_grab, bbox_top + other.v_speed, other, false, true) and !instance_position(bbox_left, bbox_top - 1,obj_solid)
+		{
+			with(other)
+			{
+				//switch hands
+				image_xscale = -1;
+				weapon_hand = -1;
+				hand_dir = mouse_dir;
+					
+				//also mirror the weapon in hand if we have one
+				if my_weapon != -1
+				{
+					with(my_weapon)
+					{
+						flip_weapon = true;
+						flip_direction = -1;
+					}
+				}
+					
+				hanging_on_ledge = true;
+				potential_end_up_location_from_ledge_x = other.bbox_right - sprite_get_xoffset(mask_index);
+				potential_end_up_location_from_ledge_y = other.bbox_top - sprite_get_height(mask_index) + sprite_get_yoffset(mask_index);
+				
+				x = other.bbox_right + sprite_get_xoffset(mask_index);
+				y = other.bbox_top + sprite_get_yoffset(mask_index);
+				
+				ds_list_clear(ledge_collision_list);
+			}
+		}
+		
+		
+	}
+	
+}
+#endregion
+
+
+
 
 #region STATE MACHINE
-if (abs(v_speed) or abs(h_speed)) > 0 
+if abs(h_speed) > 0 
 {
-	current_state = STATE.WALK;
+	if image_xscale != sign(h_speed)
+	{
+		current_state = STATE.BACK_PEDDLE;
+	}
+	else
+	{
+		current_state = STATE.RUN;
+	}
 }
+
+
+
+#region crouch
+	if crouch > 0
+	{
+		is_crouching = true;
+	}
+	else
+	{
+		is_crouching = false;
+	}
+	
+	if is_crouching == true and is_attacking == false and is_on_floor == true
+	{
+		current_state = STATE.CROUCH;
+		var max_arm_socket_y = 35;
+		arm_socket_y += 9;
+		arm_socket_y = clamp(arm_socket_y,0,max_arm_socket_y);
+		
+		//im assuming this is the last potential state
+		if last_current_state == current_state and floor(image_index) == image_number - 1
+		{
+			image_index = image_number - 1;			
+		}
+	}
+	else
+	{
+		arm_socket_y = 0;
+	}
+#endregion
 
 
 if is_attacking == true
 {
+	initially_launching_attack = true;
+	total_grav = 0;
 	current_state = STATE.ATTACK;
 	
 	//im assuming this is the last potential state
@@ -790,6 +851,209 @@ if is_attacking == true
 		image_index = image_number - 1;
 	}
 }
+else
+{
+	initially_launching_attack = false;
+}
+
+
+//in air
+if is_attacking == false and is_on_floor == false
+{
+	//check if we are going up or down
+	current_state = STATE.IN_AIR_UP;
+}
+
+
+#region on ledge
+	if hanging_on_ledge == true
+	{
+		v_speed_additional = 0;
+		current_additional_v_speed_from_jump_height = 0;
+		total_grav = 0;
+		v_speed = 0;
+		h_speed_projectile = 0;
+		h_speed_additional = 0;
+		h_speed = 0;	
+		can_flip_image_dir = false;
+	
+		mouse_dir = 90
+		arm_socket_x = 20 * image_xscale;
+		arm_socket_y = -47;
+		my_weapon_id.can_attack = false;
+		my_weapon_id.draw_weapon = false;
+
+	
+		if has_finished_initial_ledge_grab == false
+		{
+			current_state = STATE.LEDGE_INITIAL;
+			
+			if last_current_state == STATE.LEDGE_INITIAL and floor(image_index) == image_number - 1
+			{
+				has_finished_initial_ledge_grab = true;			
+			}
+		}
+		else
+		{
+			current_state = STATE.LEDGE_IDLE;
+		}
+		
+		
+		
+		if facing_dir != image_xscale
+		{
+			can_now_climb_up_with_that_directional_button = true;
+		}
+		
+		
+		var pull_self_from_ledge_width_dir_button = false;
+		if can_now_climb_up_with_that_directional_button == true and facing_dir == image_xscale
+		{
+			pull_self_from_ledge_width_dir_button = true;
+		}
+		
+		
+		//start to climb up
+		if pressed_jump == true or pull_self_from_ledge_width_dir_button == true
+		{			
+			getting_up_from_ledge = true;	
+			current_time_taken_to_get_up_from_ledge = 0;
+			hanging_on_ledge = false;
+		}
+	
+		//if pressing down ...no longer ledge grab and fall directly down
+		if crouch > 0 
+		{
+			hanging_on_ledge = false;
+		}
+	
+	
+		//if pressing on the opposite side then fall off in that direction
+		var facing_dir = (move_right - move_left);
+		var normal_run_value = (facing_dir * move_speed);
+	
+		if facing_dir != 0 and !position_meeting(x + (sprite_get_xoffset(mask_index) * facing_dir) + normal_run_value,y - sprite_get_yoffset(mask_index),obj_solid) 
+		{
+			hanging_on_ledge = false;
+		}
+	
+	
+	
+		//if we are no longer hanging due to a button push in here...reset some variables to bring back normal state
+		if hanging_on_ledge == false and getting_up_from_ledge == false
+		{
+			can_flip_image_dir = true;	
+			my_weapon_id.can_attack = true;
+			my_weapon_id.draw_weapon = true;
+		}
+	
+	}
+	
+	
+	
+	
+	if getting_up_from_ledge == true
+	{
+		//after a couple frames make the player invulnerable to damage...
+		//I hate getting on a ledge...unable to move and get smacked...potentially falling and infinite loop
+		v_speed_additional = 0;
+		current_additional_v_speed_from_jump_height = 0;
+		total_grav = 0;
+		v_speed = 0;
+		h_speed_projectile = 0;
+		h_speed_additional = 0;
+		h_speed = 0;	
+		can_flip_image_dir = false;
+		
+		mouse_dir = 160;
+		if image_xscale == 1 mouse_dir = 20;
+		var end_hand_pos_x = 34
+		arm_socket_x = min(current_time_taken_to_get_up_from_ledge * 2,end_hand_pos_x) * image_xscale;
+		arm_socket_y = -80;
+	
+		my_weapon_id.can_attack = false;
+		my_weapon_id.draw_weapon = false;	
+		current_state = STATE.LEDGE_TO_KNEE;
+		image_speed = room_speed/max_time_taken_to_get_up_from_ledge;
+		
+		current_time_taken_to_get_up_from_ledge += 1;
+		
+		var time_till_cant_get_hit = 4;//frames
+		
+		if current_time_taken_to_get_up_from_ledge < time_till_cant_get_hit
+		{
+			can_get_hit = false;
+		}
+		
+		if current_time_taken_to_get_up_from_ledge >= max_time_taken_to_get_up_from_ledge
+		{
+			
+			current_state = STATE.KNEE_TO_STAND;			
+			getting_up_from_ledge = false;
+			
+			x = potential_end_up_location_from_ledge_x;
+			y = potential_end_up_location_from_ledge_y;
+			
+			mouse_dir = 190;
+			if image_xscale == 1 mouse_dir = 50;
+			//if image_xscale == 1 mouse_dir -= 180;
+			arm_socket_x = 5 * image_xscale;
+			arm_socket_y = 74;
+		}
+		
+		
+	}
+	
+#endregion
+
+if last_current_state == STATE.KNEE_TO_STAND
+{
+	current_state = STATE.KNEE_TO_STAND;
+	
+	var current_image_index = floor(image_index);
+	
+	switch(current_image_index)
+	{
+		case 0: 
+			mouse_dir = 190;
+			if image_xscale == 1 mouse_dir = 50;
+			arm_socket_x = 5 * image_xscale;
+			arm_socket_y = 74;
+		break;
+		
+		case 1: 
+			mouse_dir = 140;
+			if image_xscale == 1 mouse_dir = 22;
+			arm_socket_x = 14 * image_xscale;
+			arm_socket_y = 60;
+		break;
+		
+		case 2: 
+			mouse_dir = 110;
+			//if image_xscale == 1 mouse_dir -= 180;
+			arm_socket_x = 25 * image_xscale;
+			arm_socket_y = 14;
+		break;
+	}
+	
+	
+	
+	if current_image_index == image_number - 1
+	{
+		current_state = STATE.IDLE;	
+		
+		can_get_hit = true;
+		can_flip_image_dir = true;
+	
+		my_weapon_id.can_attack = true;
+		my_weapon_id.draw_weapon = true;
+		
+		arm_socket_x = 0;
+		arm_socket_y = 0;
+	}
+
+}
+
 
 
 //animate our sprites
@@ -797,7 +1061,6 @@ if current_state != last_current_state
 {
 	image_index = 0;
 }
-
 
 last_current_state = current_state;
 
@@ -811,9 +1074,10 @@ sprite_index = sprite_state_array[current_state];
 
 
 
-
-scr_movement_and_collision();
-
+if hanging_on_ledge == false and getting_up_from_ledge == false and last_current_state != STATE.KNEE_TO_STAND
+{
+	scr_movement_and_collision();
+}
 
 
 

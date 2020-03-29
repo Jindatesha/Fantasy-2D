@@ -34,7 +34,7 @@ y += round((y_to - y) * 0.15);
 var locked_x = round(x - (view_w/2));
 var locked_y = round(y - (view_h/2));
 
-camera_set_view_size(view,ideal_screen_width,ideal_screen_height);
+camera_set_view_size(view,ideal_screen_width * zoom_amount,ideal_screen_height * zoom_amount);
 
 
 

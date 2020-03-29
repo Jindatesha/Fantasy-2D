@@ -1,13 +1,13 @@
 /// @description Insert description here
 // You can write your code in this editor
 
-current_state = STATE.WALK;
+current_state = STATE.RUN;
 
-sprite_state_array[STATE.WALK] = spr_enemy_slime_move_side;
+sprite_state_array[STATE.RUN] = spr_enemy_slime_move_side;
 //sprite_state_array[STATE.DODGE_ROLL] = spr_player_move_dodge_roll_side;
 
-
-
+can_air_juggle = false;
+is_attacking = false;
 h_speed_projectile = 0;
 move_speed = 10;
 max_speed = 40;
@@ -25,6 +25,7 @@ current_additional_v_speed_from_jump_height = 0;
 normal_move_h_amount = 0;
 has_launched_attack = false;
 is_on_floor = false;
+is_crouching = false;
 
 my_max_hp = 40;
 my_hp = my_max_hp;
@@ -42,7 +43,7 @@ mask_index = spr_enemy_slime_collision;
 
 my_respawn_rate = room_speed * 2;
 
-
+can_get_hit = true;
 can_attack = true;
 
 my_attack_reload_time = room_speed * 2;

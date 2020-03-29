@@ -8,9 +8,12 @@ repeat(hit_count)
 {
 	with (ds_list_find_value(hit_list,i))
 	{
-		my_hp -= other.my_damage;
-		show_health_reduction_timer = show_health_max_reduction_time;
-		hp_lossed = other.my_damage;
+		if can_get_hit == true
+		{
+			my_hp -= other.my_damage;
+			show_health_reduction_timer = show_health_max_reduction_time;
+			hp_lossed = other.my_damage;
+		}
 	}
 				
 	i += 1;

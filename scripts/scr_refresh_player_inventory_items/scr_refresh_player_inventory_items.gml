@@ -5,8 +5,8 @@
 
 
 //set the position for the ui
-var starting_inventory_x = (view_w/2) - (sprite_get_width(spr_ui_healthbar_backing)/2);
-var starting_inventory_y = view_h * 0.1;
+var starting_inventory_x = (gui_w/2) - (sprite_get_width(spr_ui_healthbar_backing)/2);
+var starting_inventory_y = gui_h * 0.1;
 
 if instance_exists(obj_player)
 {

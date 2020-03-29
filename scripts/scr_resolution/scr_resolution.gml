@@ -19,6 +19,7 @@ window_set_size( this_screens_width, this_screens_height);
 
 
 //these are our target device dimensions
+
 ideal_screen_width = 1920;
 ideal_screen_height = 1080;
 
