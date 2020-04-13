@@ -208,6 +208,20 @@ ds_list_add(global.monster_drop_list,slime_drop_list);
 
 
 #region ALL items data-base...what item number
+
+enum THIS_ITEMS
+{
+	SPRITE_INDEX,
+	IMAGE_INDEX,
+	ITEM_CLASS,
+	SLOT_WIDTH,
+	SLOT_HEIGHT
+	
+	
+}
+
+
+
 global.item_database_grid = ds_grid_create(5,0);
 
 //materials
@@ -230,3 +244,10 @@ scr_add_item_to_database_grid(spr_all_materials,MATERIAL_LIST.PURPLE_GEM,ITEM_CL
 	//weapons
 	scr_add_item_to_forge_grid(WEAPON_LIST.BASIC,"Wood Sword",MATERIAL_LIST.BASIC,2,MATERIAL_LIST.ICE_BLOCK,1);
 #endregion
+
+
+
+
+
+//what item are we dragging for our inventory stuff
+global.item_in_hand = -1;

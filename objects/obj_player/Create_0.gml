@@ -120,9 +120,9 @@ starting_inventory_y = 0;
 inventory_on = -1;//-1 is off by default (1 = on)
 
 
-inventory_list = ds_list_create();
-ds_list_add(inventory_list,-1,-1,-1,-1);
-
+global.player_inventory_grid = ds_grid_create(5,4);
+ds_grid_add_region(global.player_inventory_grid, 0, 0, 4, 3, -1);//set all inventory to empty (-1) 
+inventory_slots_pos_array[0,0] = 0;
 
 
 
@@ -154,6 +154,7 @@ hotbar_item_array[0] = -1;
 
 
 player_name = "Jindatesha";
+
 
 
 

@@ -203,7 +203,17 @@ if is_casting_spell[0] or is_casting_spell[1] or is_casting_spell[2]
 
 
 
+#region inventory
+
+	if is_inventory_open == true
+	{
+		//set the position for the ui
+		var starting_inventory_x = gui_w - sprite_get_width(spr_ui_backpack_backing) - 20;
+		var starting_inventory_y = (gui_h * 0.5) - (sprite_get_height(spr_ui_backpack_backing)/2);
+		//draw_sprite(spr_ui_backpack_backing,0,starting_inventory_x,starting_inventory_y);
+	}
 
 
+#endregion
 
 

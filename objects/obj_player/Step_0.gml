@@ -19,7 +19,7 @@ var pick_up_item = keyboard_check_pressed(ord("E"));
 
 var use_utility_item = keyboard_check_pressed(ord("Q"));
 
-var call_inventory = keyboard_check(vk_tab);
+var call_inventory = keyboard_check_pressed(vk_tab);
 
 
 
@@ -387,222 +387,171 @@ if is_casting_spell[0] or is_casting_spell[1] or is_casting_spell[2]
 //if we press the inventory button
 if call_inventory > 0 
 {
+	#region OPENING BACKPACK
 	if is_inventory_open == false
 	{
 		is_inventory_open = true;
-
 		
-		//set the position for the ui
-		var starting_inventory_x = (gui_w/2) - (sprite_get_width(spr_ui_healthbar_backing)/2);
-		var starting_inventory_y = gui_h * 0.1;
-			
-			
-
+		//for camera
+		//create new object for camera to follow for a short while
+		scr_camera_new_follow_target(-1,id,gui_w * 0.1,0,false);
+		
+		//tell camera to zoom in and pan to the new object to follow
+		scr_camera_zoom_and_pan(true,obj_camera.zoom_amount,0.75,room_speed * 0.3,TWEEN_TYPE.CUBIC_OUT,true,x,obj_camera_target.x,y,obj_camera_target.y,room_speed * 0.3,TWEEN_TYPE.CUBIC_OUT,false,true);
+		
 		//create all the items inside the inventory for us to be able to grab and do stuff with
-		var hotbar_amount_of_slots = 6;
-		var how_many_items_in_inventory_pre = ds_list_size(inventory_list) - hotbar_amount_of_slots;
-		//var item_slots_filled = 0;
-		for(var i = 0; i < how_many_items_in_inventory_pre; i+=1;)
-		{
-			//obj_item_in_inventory
-			var this_item = ds_list_find_value(inventory_list,i);
-			if this_item != -1
-			{				
-				
-				
-				//create and place the visual item
-				with (instance_create_depth(starting_inventory_x + inventory_slots_pos_array[i,0],starting_inventory_y + inventory_slots_pos_array[i,1],depth - 1,obj_item_in_inventory))
-				{
-					//create an enum sprite list for weapons and for equipment					
-					my_item_number = ds_list_find_value(other.inventory_list,i);					
-					
-					// based on item number; what class and sprite_index are you?										
-					sprite_index = ds_grid_get(global.item_database_grid,THIS_ITEMS.SPRITE_INDEX,my_item_number);		
-					image_index = scr_item_number_to_sprite_or_image_index(my_item_number,1);
-					my_item_class = ds_grid_get(global.item_database_grid,THIS_ITEMS.ITEM_CLASS,my_item_number);					
-					
-	
-					image_speed = 0;
-					
-					current_inventory_slot = i;
-					slot_placement_x = obj_player.inventory_slots_pos_array[i,0];
-					slot_placement_y = obj_player.inventory_slots_pos_array[i,1];
-					
-				}
-								
-			}
+		var inventory_width = ds_grid_width(global.player_inventory_grid);
+		var inventory_height = ds_grid_height(global.player_inventory_grid);
+		var how_many_items_in_inventory_pre = inventory_width * inventory_height;
+		var inv_grid_number_x = 0;
+		var inv_grid_number_y = 0;
+		var item_slot_spacing = 15;
+		var width_of_item_slot = 80;
+		var total_space_for_slot = width_of_item_slot + item_slot_spacing;				
+		var backpack_collision_width = sprite_get_width(spr_ui_backpack_backing);
+		var backpack_collision_height = sprite_get_height(spr_ui_backpack_backing);
+
+		var view_to_gui_ratio = view_w/gui_w;
+		var starting_inventory_x = view_x + ((gui_w - sprite_get_width(spr_ui_backpack_backing) - 20) * view_to_gui_ratio);
+		var starting_inventory_y = view_y + (((gui_h * 0.5) - (sprite_get_height(spr_ui_backpack_backing)/2)) * view_to_gui_ratio);
+		//this is the inventory object_collision
+		instance_create_depth(starting_inventory_x,starting_inventory_y,depth,obj_collision_full_inventory);
+
 			
-			
-			
-			//create and place a collision box for an invisible check to see if an item can be moved here
-			with (instance_create_depth(starting_inventory_x + inventory_slots_pos_array[i,0],starting_inventory_y + inventory_slots_pos_array[i,1],depth - 2,obj_check_inventory_slot))
+		//items to be in starting slot
+		var first_item_slot_adjust_x = 333;
+		var first_item_slot_adjust_y = 252;
+		starting_inventory_x += first_item_slot_adjust_x;
+		starting_inventory_y += first_item_slot_adjust_y;
+		
+		#region create all of our objects and colliders for the inventory slots
+			for(var i = 0; i < how_many_items_in_inventory_pre; i+=1;)
 			{
-				current_inventory_slot = i;
-				//class
-				slot_placement_x = obj_player.inventory_slots_pos_array[i,0];
-				slot_placement_y = obj_player.inventory_slots_pos_array[i,1];
-				
-				
-				
-				
-				
-				/*
-				0 = wep 1
-				1 = wep 2
-
-				2 = glove
-				3 = ring
-				4 = boots
-
-				5 = helmet
-				6 = torso
-				7 = legs
-
-				8 -> ?? = left -> right then down one row
-				ie:
-				8,9,10
-				11,12,13
-				*/
-				switch(i)
-				{
-					default:
-					case 0: 
-						my_slot_class = ITEM_CLASS.HELMET;
-					break;
-					
-					case 1: 
-						my_slot_class = ITEM_CLASS.TORSO;
-					break;
-					
-					case 2: 
-						my_slot_class = ITEM_CLASS.PANTS;
-					break;
-					
-					case 3: 
-						my_slot_class = ITEM_CLASS.ANYTHING;
-					break;
-					
-					case 4: 
-						my_slot_class = ITEM_CLASS.ANYTHING;
-					break;
-					
-					case 5: 
-						my_slot_class = ITEM_CLASS.ANYTHING;
-					break;
-					
-					case 6: 
-						my_slot_class = ITEM_CLASS.ANYTHING;
-					break;
-					
-					case 7: 
-						my_slot_class = ITEM_CLASS.ANYTHING;
-					break;
-					
-					case 8: 
-						my_slot_class = ITEM_CLASS.ANYTHING;
-					break;
-					
-					case 9: 
-						my_slot_class = ITEM_CLASS.ANYTHING;
-					break;
-					
-					case 10: 
-						my_slot_class = ITEM_CLASS.ANYTHING;
-					break;
-					
-					case 11: 
-						my_slot_class = ITEM_CLASS.ANYTHING;
-					break;
-					
-					case 12: 
-						my_slot_class = ITEM_CLASS.ANYTHING;
-					break;
-					
-					case 13: 
-						my_slot_class = ITEM_CLASS.ANYTHING;
-					break;
-					
-					case 14: 
-						my_slot_class = ITEM_CLASS.ANYTHING;
-					break;
-					
-					case 15: 
-						my_slot_class = ITEM_CLASS.ANYTHING;
-					break;
-					
-					case 16: 
-						my_slot_class = ITEM_CLASS.ANYTHING;
-					break;
-					
-					case 17: 
-						my_slot_class = ITEM_CLASS.ANYTHING;
-					break;
-					
-					case 18: 
-						my_slot_class = ITEM_CLASS.ANYTHING;
-					break;
-					
-					case 19: 
-						my_slot_class = ITEM_CLASS.ANYTHING;
-					break;
-					
-					case 20: 
-						my_slot_class = ITEM_CLASS.ANYTHING;
-					break;
-					
-				
-				}
-					
-			}
-		}
+		
+				inv_grid_number_x = i mod inventory_width;
+				inv_grid_number_y = i div inventory_width;
 			
+				//obj_item_in_inventory			
+				var this_item = ds_grid_get(global.player_inventory_grid,inv_grid_number_x,inv_grid_number_y);
+				if this_item != -1
+				{							
+					//create and place the visual item				
+					with (instance_create_depth(starting_inventory_x + (total_space_for_slot * inv_grid_number_x),starting_inventory_y + (total_space_for_slot * inv_grid_number_y),depth - 1,obj_item_in_inventory))
+					{
+						my_starting_x = first_item_slot_adjust_x + (total_space_for_slot * inv_grid_number_x);
+						my_starting_y = first_item_slot_adjust_y + (total_space_for_slot * inv_grid_number_y);
+						
+						//create an enum sprite list for weapons and for equipment					
+						my_item_number = this_item;					
+					
+						//based on item number; what class and sprite_index are you?										
+						sprite_index = ds_grid_get(global.item_database_grid,THIS_ITEMS.SPRITE_INDEX,my_item_number);		
+						image_index = scr_item_number_to_sprite_or_image_index(my_item_number,1);
+						my_item_class = ds_grid_get(global.item_database_grid,THIS_ITEMS.ITEM_CLASS,my_item_number);
+						my_item_width = sprite_get_width(sprite_index) div width_of_item_slot;
+						my_item_height = sprite_get_height(sprite_index) div width_of_item_slot;//its a square
+						image_speed = 0;
+					
+						current_inventory_slot = i;
+						my_inv_grid_number_x = inv_grid_number_x;
+						my_inv_grid_number_y = inv_grid_number_y;
+						//slot_placement_x = (total_space_for_slot * inv_grid_number_x);
+						//slot_placement_y = (total_space_for_slot * inv_grid_number_y);				
+					}								
+				}
+			
+			
+			
+				//create and place a collision box for an invisible check to see if an item can be moved here
+				with (instance_create_depth(starting_inventory_x + (total_space_for_slot * inv_grid_number_x),starting_inventory_y + (total_space_for_slot * inv_grid_number_y),depth - 2,obj_check_inventory_slot))
+				{
+					current_inventory_slot = i;
+					//class
+					my_starting_x = first_item_slot_adjust_x + (total_space_for_slot * inv_grid_number_x);
+					my_starting_y = first_item_slot_adjust_y + (total_space_for_slot * inv_grid_number_y);	
+					
+					my_item_class = ITEM_CLASS.ANYTHING;
+					
+					my_inv_grid_number_x = inv_grid_number_x;
+					my_inv_grid_number_y = inv_grid_number_y;
+				}
+			
+			
+			}
+		#endregion
+
 		
-	}
-		
-		
-}
-else
-{
-	if is_inventory_open == true
+			
+	#endregion
+	}	
+	else
 	{
+	#region CLOSE BACKPACK
+
 		is_inventory_open = false;
 		
-		
-		
+		//allow ourselves to able to attack and flip dir
+		my_weapon_id.can_attack = true;
+		can_flip_image_dir = true;
+				
 		//get rid of all the objects that we can grab
-		with (obj_item_in_inventory)
+		with(obj_item_in_inventory)
 		{
-			//if we are not a hotbar item
-			if current_inventory_slot < 15
-			{
-				if are_we_being_held_by_cursor == false
-				{			
-					instance_destroy();
-				}
-			}
+			if are_we_being_held_by_cursor == false
+			{			
+				instance_destroy();
+			}			
 		}
+		
 		
 		//get rid of all the slot location objects
-		with (obj_check_inventory_slot)
-		{
-			if current_inventory_slot < 15
-			{
-				instance_destroy();
-			}
+		with(obj_check_inventory_slot)
+		{			
+			instance_destroy();			
 		}
 	
+		
+		//tell camera to zoom in and pan to the new object to follow
+		scr_camera_zoom_and_pan(true,obj_camera.zoom_amount,1,room_speed * 0.3,TWEEN_TYPE.CUBIC_OUT,false,x,obj_camera_target.x,y,obj_camera_target.y,room_speed * 1,TWEEN_TYPE.LINEAR,false,true);
+		
+		
+		
+		//get rid of that camera follow from opening inv
+		instance_destroy(obj_camera.follow_object_id);
+		
+		obj_camera.follow_target = true;
+		obj_camera.follow_object_id = -1;
+		
+		instance_destroy(obj_collision_full_inventory);
+		
+		
 	}
+
 }
+
 #endregion
+	
+	
+	
+	if is_inventory_open == true
+	{			
+		//stop ourselves from being able to attack and flip dir
+		my_weapon_id.can_attack = false;
+		can_flip_image_dir = false;
+	}
+
+#endregion
+
+
+
+
 
 
 #region Item Pickup
 
-
 	//same button will be for using the forge
 	if collision_circle(x,y,300,obj_forge,false,true) 
-	{
-		
+	{	
 		if pick_up_item > 0 and !instance_exists(obj_forge_menu)
 		{
 			instance_create_depth(x,y,depth,obj_forge_menu)
@@ -622,55 +571,24 @@ else
 
 
 
-if pick_up_item > 0
-{
-	
-
-	
-	
-
-	var hit_list = ds_list_create();
-	var hit_count = instance_place_list(x,y,obj_item_on_floor,hit_list,true);
-	var item_to_be_picked_up = ds_list_find_value(hit_list,0);
-	var number_of_equipment_slots = 3;
-	
-	if hit_count > 0
+	if pick_up_item > 0
 	{
-		//see where the nearest empty slot is...if not present then cant pickup
-		var current_total_slots = ds_list_size(inventory_list);
-		for(var i = 0; i < current_total_slots; i += 1;)
+
+		var hit_list = ds_list_create();
+		var hit_count = instance_place_list(x,y,obj_item_on_floor,hit_list,true);
+		var item_to_be_picked_up = ds_list_find_value(hit_list,0);
+			
+	
+		if hit_count > 0
 		{
-			//check to see if this slot is empty (-1)
-			if ds_list_find_value(inventory_list,i) == -1
-			{
-				
-				//place the item into our inventory
-				ds_list_replace(inventory_list,i,item_to_be_picked_up.my_item_number);
-			
-			
-				//destroy that item on the floor so we cant keep picking it up
-				with (item_to_be_picked_up)
-				{		
-					//destroy item so it cant be picked up again
-					instance_destroy();
-				}			
-				
-				
-				scr_refresh_player_inventory_items();
-				
-				//we found an empty slot to put our new item in...leave this loop
-				break; 
-			}
-		
+			scr_check_and_put_item_in_inventory(item_to_be_picked_up);
 		}
 
+	
+		//no item slots available but still clean up your list			
+		ds_list_destroy(hit_list);
+	
 	}
-
-	
-	//no item slots available but still clean up your list			
-	ds_list_destroy(hit_list);
-	
-}
 
 #endregion
 
@@ -746,7 +664,7 @@ if colliding_terrain_id != noone
 				potential_end_up_location_from_ledge_x = other.bbox_left + sprite_get_xoffset(mask_index);
 				potential_end_up_location_from_ledge_y = other.bbox_top - sprite_get_height(mask_index) + sprite_get_yoffset(mask_index);
 				
-				x = other.bbox_left - sprite_get_xoffset(mask_index);
+				x = other.bbox_left - sprite_get_xoffset(mask_index) - 1;
 				y = other.bbox_top + sprite_get_yoffset(mask_index);
 				
 				ds_list_clear(ledge_collision_list);
@@ -778,7 +696,7 @@ if colliding_terrain_id != noone
 				potential_end_up_location_from_ledge_x = other.bbox_right - sprite_get_xoffset(mask_index);
 				potential_end_up_location_from_ledge_y = other.bbox_top - sprite_get_height(mask_index) + sprite_get_yoffset(mask_index);
 				
-				x = other.bbox_right + sprite_get_xoffset(mask_index);
+				x = other.bbox_right + sprite_get_xoffset(mask_index) + 1;
 				y = other.bbox_top + sprite_get_yoffset(mask_index);
 				
 				ds_list_clear(ledge_collision_list);
@@ -1073,13 +991,10 @@ sprite_index = sprite_state_array[current_state];
 
 
 
-
 if hanging_on_ledge == false and getting_up_from_ledge == false and last_current_state != STATE.KNEE_TO_STAND
 {
 	scr_movement_and_collision();
 }
-
-
 
 
 

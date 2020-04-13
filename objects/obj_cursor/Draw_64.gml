@@ -4,11 +4,8 @@
 
 draw_self();
 
-/*
-draw_text(x,y - 80,string(x));
 
-draw_text(x + string_width(string(x)) + 5,y - 80,string(y));
-
+//draw_sprite(sprite_index,image_index,gui_x,gui_y);
 
 
 

@@ -47,6 +47,14 @@
             }
         },
         {
+            "Key": "07117dbb-5d92-44f8-9142-52d8cd8e14ab",
+            "Value": {
+                "id": "2a7ece0f-51ff-4ba9-9604-011e3b44f38e",
+                "resourcePath": "scripts\\scr_tween\\scr_tween.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "0a9cc732-b659-486d-9535-3c05a6369210",
             "Value": {
                 "id": "611f956d-b77e-4440-9f15-9affcb1995fd",
@@ -84,6 +92,14 @@
                 "id": "15bb5555-1411-4d08-bfb9-a899e46fa680",
                 "resourcePath": "objects\\obj_camera\\obj_camera.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "17f1d0af-82cc-4f39-86b0-91aace7e2e5d",
+            "Value": {
+                "id": "1cba0162-00f4-407d-9a76-ca3fbd50f05e",
+                "resourcePath": "sprites\\spr_test_camera_marker\\spr_test_camera_marker.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -231,6 +247,14 @@
             }
         },
         {
+            "Key": "3481dd9f-2e77-44bf-9ddb-0acbe0509194",
+            "Value": {
+                "id": "9864eb3b-2ea9-4936-a302-20b26ae5ebae",
+                "resourcePath": "objects\\obj_check_inventory_slot\\obj_check_inventory_slot.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "35399866-2fa1-4dc3-b205-7aaded659e24",
             "Value": {
                 "id": "40faadb7-d14f-4afe-818c-207fc5c7ecaa",
@@ -244,6 +268,14 @@
                 "id": "895cb108-a6aa-491f-b2fd-747796103a95",
                 "resourcePath": "objects\\obj_hit_collision\\obj_hit_collision.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "3a5c073f-9562-4df2-a7e8-24ee0819ab72",
+            "Value": {
+                "id": "8e1e1464-31d9-4c2f-b9cc-3bca0824e122",
+                "resourcePath": "sprites\\spr_ui_backpack_backing\\spr_ui_backpack_backing.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -300,6 +332,14 @@
                 "id": "3c15b910-c871-4120-90bb-f76fc6524b2e",
                 "resourcePath": "sprites\\spr_weapon_sword_basic_1\\spr_weapon_sword_basic_1.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "546650d6-6ef5-406a-9a91-ddbee03066a1",
+            "Value": {
+                "id": "1e31fd11-a82b-42e6-b40d-ea726642652a",
+                "resourcePath": "views\\546650d6-6ef5-406a-9a91-ddbee03066a1.yy",
+                "resourceType": "GMFolder"
             }
         },
         {
@@ -431,6 +471,14 @@
             }
         },
         {
+            "Key": "7170dc28-936d-4e2c-ae6d-8a2c2f56a0e8",
+            "Value": {
+                "id": "56907323-12d0-4547-9d8b-365f6747429e",
+                "resourcePath": "objects\\obj_camera_target\\obj_camera_target.yy",
+                "resourceType": "GMObject"
+            }
+        },
+        {
             "Key": "720d56ba-2ecd-46b6-8219-761e5c3f3b48",
             "Value": {
                 "id": "520d4706-606b-476b-a25f-777860999e22",
@@ -460,6 +508,14 @@
                 "id": "31981a08-6b41-406f-8bce-33db7fbdf7af",
                 "resourcePath": "sprites\\spr_player_in_air_up\\spr_player_in_air_up.yy",
                 "resourceType": "GMSprite"
+            }
+        },
+        {
+            "Key": "80f16f91-8a80-453c-b1a3-fa1ff9635288",
+            "Value": {
+                "id": "87e6d560-ae7a-4aa6-9c70-719ebd2aaf95",
+                "resourcePath": "objects\\obj_collision_full_inventory\\obj_collision_full_inventory.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -703,6 +759,14 @@
             }
         },
         {
+            "Key": "ca3270e2-3249-4d80-877c-9aead8bc0137",
+            "Value": {
+                "id": "0f3b221d-f306-4a3c-ad34-33b4f686c5e9",
+                "resourcePath": "scripts\\scr_check_and_put_item_in_inventory\\scr_check_and_put_item_in_inventory.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "ca37eaa3-68c7-4417-a465-ba0440ff1bdf",
             "Value": {
                 "id": "4e4e0332-02e0-48dd-b34f-85c438949c90",
@@ -740,6 +804,14 @@
                 "id": "06273435-eb01-4e70-8a74-079a8bf35986",
                 "resourcePath": "views\\ccdd3b8c-5a60-4fdf-8d91-d58d85688ed2.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "d0327ec9-3086-4f4e-baf8-4394790b9fb0",
+            "Value": {
+                "id": "278b5895-3b29-4777-8f37-4eb5597bb144",
+                "resourcePath": "objects\\obj_item_in_inventory\\obj_item_in_inventory.yy",
+                "resourceType": "GMObject"
             }
         },
         {
@@ -783,6 +855,14 @@
             }
         },
         {
+            "Key": "d96d08e1-8bd8-4168-aa8b-b6870c5456c7",
+            "Value": {
+                "id": "ca0a27cd-f663-4568-86ce-c7bb59c2c71e",
+                "resourcePath": "scripts\\scr_camera_new_follow_target\\scr_camera_new_follow_target.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "dc54438e-a13c-4175-ad2b-053068be54c6",
             "Value": {
                 "id": "88043c20-6497-4c72-8060-81e33d0babd1",
@@ -820,6 +900,14 @@
                 "id": "2fc2d0bc-b7dd-4a41-9e8f-48da000e3ffa",
                 "resourcePath": "options\\android\\options_android.yy",
                 "resourceType": "GMAndroidOptions"
+            }
+        },
+        {
+            "Key": "e512bfd7-0c6a-4c83-8ac9-c1af90166b37",
+            "Value": {
+                "id": "6bdbe796-4f05-4452-ba3e-9a7ba4121171",
+                "resourcePath": "sprites\\spr_ui_inventory_slot_backing\\spr_ui_inventory_slot_backing.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -903,6 +991,14 @@
             }
         },
         {
+            "Key": "f4888a3c-21e7-4fbb-a0ee-4ac60e493681",
+            "Value": {
+                "id": "8880340e-9be3-4673-a62a-66f1ca96c67d",
+                "resourcePath": "scripts\\scr_camera_zoom_and_pan\\scr_camera_zoom_and_pan.yy",
+                "resourceType": "GMScript"
+            }
+        },
+        {
             "Key": "fefdc2c8-69f0-4547-9f97-3510c1e9a996",
             "Value": {
                 "id": "85bdf876-4d36-478b-956c-c88f9673f48e",
@@ -926,7 +1022,11 @@
         "ac66f40e-a81a-4b2c-a781-e6e1581d1013",
         "dc54438e-a13c-4175-ad2b-053068be54c6",
         "8e00f683-7b6b-4214-a1ea-18d412d879c5",
-        "ea3ac976-7a07-4cb2-afbf-18c0714e7212"
+        "ea3ac976-7a07-4cb2-afbf-18c0714e7212",
+        "d96d08e1-8bd8-4168-aa8b-b6870c5456c7",
+        "f4888a3c-21e7-4fbb-a0ee-4ac60e493681",
+        "07117dbb-5d92-44f8-9142-52d8cd8e14ab",
+        "ca3270e2-3249-4d80-877c-9aead8bc0137"
     ],
     "tutorial": ""
 }

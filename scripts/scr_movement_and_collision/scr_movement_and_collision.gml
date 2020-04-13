@@ -25,6 +25,7 @@ coyote_time = 0;
 h_speed_projectile = 0;
 is_attacking = false;
 can_air_juggle = true;
+is_crouching = false;
 */
 #endregion
 

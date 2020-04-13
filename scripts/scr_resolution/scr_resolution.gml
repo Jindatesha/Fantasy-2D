@@ -19,7 +19,6 @@ window_set_size( this_screens_width, this_screens_height);
 
 
 //these are our target device dimensions
-
 ideal_screen_width = 1920;
 ideal_screen_height = 1080;
 
@@ -27,8 +26,6 @@ ideal_screen_height = 1080;
 
 //determine the preferred aspect ratio so we can keep it
 aspect_ratio = ideal_screen_width/ideal_screen_height;
-
-
 
 //work out the adjusted height and width for our device
 if(this_screens_width >= this_screens_height)
@@ -41,6 +38,8 @@ else
 	final_display_width = round(min(ideal_screen_width,this_screens_width));
 	final_display_height = round(final_display_width / aspect_ratio);
 }
+
+
 
 
 //resize the application surface to our adjusted values
